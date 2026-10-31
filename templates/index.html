@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Community Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body data-threshold="{{ default_threshold }}">
+  <main class="layout">
+    <section class="stage">
+      <canvas id="cv" aria-label="Student similarity graph"></canvas>
+      <p class="hint">Click a student to select. Double-click to walk from them. Shift-click to choose a path destination. Drag to move, scroll to zoom, Esc to clear.</p>
+    </section>
+
+    <aside class="side">
+      <h1>Student Community Detector</h1>
+      <div id="msg" class="msg" role="status"></div>
+      <div id="stats" class="stats"></div>
+
+      <div class="card">
+        <label for="th">Similarity threshold: <strong id="thv"></strong></label>
+        <input id="th" type="range" min="0.05" max="1" step="0.05">
+        <div class="row">
+          <div class="seg" role="group" aria-label="Search method">
+            <button id="m-bfs" class="on" type="button">BFS</button>
+            <button id="m-dfs" type="button">DFS</button>
+          </div>
+          <button id="walk" type="button">Walk from selected</button>
+        </div>
+        <div class="row">
+          <select id="dst" aria-label="Path destination"></select>
+          <button id="path" type="button">Shortest path</button>
+        </div>
+      </div>
+
+      <div class="card" id="detail"><p class="muted">Select a student to see details and suggestions.</p></div>
+
+      <div class="card">
+        <h2>Communities</h2>
+        <div id="comms"></div>
+      </div>
+
+      <details class="card">
+        <summary>Add a student</summary>
+        <div class="form">
+          <input id="f-name" placeholder="Name" maxlength="60">
+          <input id="f-dept" placeholder="Department" maxlength="40">
+          <input id="f-year" type="number" min="1" max="6" value="1" aria-label="Year">
+          <input id="f-int" placeholder="Interests, separated by commas">
+          <button id="add" type="button">Add student</button>
+        </div>
+      </details>
+
+      <div class="card row wrap">
+        <a class="btn" href="/api/export.csv">Export CSV</a>
+        <label class="btn">Import CSV<input id="imp" type="file" accept=".csv,text/csv" hidden></label>
+        <button id="reset" type="button">Reset sample data</button>
+      </div>
+    </aside>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
